@@ -113,7 +113,10 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (checkBoxDone.isChecked()) {
 //                    removeGoalFromDatabase(position); //TODO: prieš ištrinant reiktų parodyti confirmation dialog https://stackoverflow.com/questions/5127407/how-to-implement-a-confirmation-yes-no-dialogpreference
-//                    Goal checkedGoal = (Goal) getItem(position);
+                    Goal checkedGoal = (Goal) getItem(position);
+                    if (checkedGoal.isOkrGoalsDone()) {
+//                        goalsRef.child(goal.)
+                    }
 //                    Toast.makeText(context, checkedGoal.toString(), Toast.LENGTH_SHORT).show();
                 }
             }

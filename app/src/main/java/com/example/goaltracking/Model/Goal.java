@@ -27,6 +27,7 @@ public class Goal implements Serializable {
     public Goal() {
         this.dateDone = null;
         this.notificationLastSent = "n/a";
+        this.isDone = false;
     }
 
     public Goal(int value, String goal) {
@@ -34,6 +35,7 @@ public class Goal implements Serializable {
         this.goal = goal;
         this.dateDone = null;
         this.notificationLastSent = "n/a";
+        this.isDone = false;
     }
 
     public Goal(String goal, int value, String id, Boolean isImportant, String dueDate, String dateCreated, Boolean showProgressToEveryone, String notificationPeriod) {
@@ -47,6 +49,7 @@ public class Goal implements Serializable {
         this.dateDone = null;
         this.notificationPeriod = notificationPeriod;
         this.notificationLastSent = "n/a";
+        this.isDone = false;
     }
 
     public String getNotificationLastSent() {
@@ -79,14 +82,6 @@ public class Goal implements Serializable {
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
-    }
-
-    public Boolean getImportant() {
-        return isImportant;
-    }
-
-    public void setImportant(Boolean important) {
-        isImportant = important;
     }
 
     public List<String> getSharedWith() {

@@ -33,6 +33,9 @@ public class FirebaseMessages extends FirebaseMessagingService {
 //        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1410, intent,
 //                PendingIntent.FLAG_ONE_SHOT);
 
+//        Intent intent=new Intent(this, LoadingWindow.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT)
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String CHANNEL_ID = "my_channel_01";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -56,11 +59,11 @@ public class FirebaseMessages extends FirebaseMessagingService {
                 .setContentText(remoteMessage.getData().get("body")) // message for notification
                 .setAutoCancel(true) // clear notification after click
                 .setChannelId(CHANNEL_ID);
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pi = PendingIntent.getActivity(this,0,intent, PendingIntent.FLAG_IMMUTABLE);
+        Intent intent = new Intent(this, LoadingWindow.class);
+        PendingIntent pi = PendingIntent.getActivity(this,0,intent, PendingIntent.FLAG_ONE_SHOT);
         mBuilder.setContentIntent(pi);
 
-        mNotificationManager.notify(0, mBuilder.build());
+        mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());
     }
 
     @Override
