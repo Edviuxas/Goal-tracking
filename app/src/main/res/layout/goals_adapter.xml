@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageExclamation"
+        android:layout_width="33dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/exclamation"
+        app:layout_constraintBottom_toBottomOf="@+id/textDueDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textGoalText" />
+
+    <ImageView
+        android:id="@+id/imageShared"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/share"
+        app:layout_constraintBottom_toBottomOf="@+id/imageExclamation"
+        app:layout_constraintEnd_toStartOf="@+id/imageExclamation"
+        app:layout_constraintTop_toTopOf="@+id/imageExclamation" />
+
+    <TextView
+        android:id="@+id/textGoalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:maxWidth="230dp"
+        android:text="Goal text"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxDone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="Due date"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/textGoalText"
+        app:layout_constraintTop_toBottomOf="@+id/textGoalText" />
+
+    <CheckBox
+        android:id="@+id/checkBoxDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/textDueDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textGoalText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

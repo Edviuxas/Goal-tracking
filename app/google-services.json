@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "64490167970",
+    "firebase_url": "https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "goal-tracking-ccad5",
+    "storage_bucket": "goal-tracking-ccad5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64490167970:android:4cdf36d87540bc3c4181fb",
+        "android_client_info": {
+          "package_name": "com.example.goaltracking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64490167970-vah0h33cguv669hc80t2t527m7q3tl6j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.goaltracking",
+            "certificate_hash": "83275020059a5864f3caebfe3b81472188bffe64"
+          }
+        },
+        {
+          "client_id": "64490167970-o3kdfecrh2cf1mls8n55005b03t00b3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3T2rG1IjQdRmfoFF4MUmn5KTWtFqXtMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64490167970-o3kdfecrh2cf1mls8n55005b03t00b3h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
