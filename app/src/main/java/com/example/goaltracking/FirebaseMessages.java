@@ -60,7 +60,7 @@ public class FirebaseMessages extends FirebaseMessagingService {
                 .setAutoCancel(true) // clear notification after click
                 .setChannelId(CHANNEL_ID);
         Intent intent = new Intent(this, LoadingWindow.class);
-        PendingIntent pi = PendingIntent.getActivity(this,0,intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pi = PendingIntent.getActivity(this,0,intent, PendingIntent.FLAG_IMMUTABLE);
         mBuilder.setContentIntent(pi);
 
         mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());

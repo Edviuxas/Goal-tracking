@@ -281,6 +281,7 @@ public class TeamsWithTeamFragment extends Fragment {
                 pendingTeamRequestsRef.child(key).setValue(teamInvitation);
 
                 textEmailAddress.setText("");
+                Toast.makeText(getContext(), "Invitation successful", Toast.LENGTH_SHORT).show();
             }
         });
 

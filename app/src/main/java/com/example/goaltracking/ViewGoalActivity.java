@@ -121,6 +121,8 @@ public class ViewGoalActivity extends AppCompatActivity {
                         intent.putExtra("okrId", okrId);
 
                         startActivity(intent);
+                    } else {
+                        Toast.makeText(ViewGoalActivity.this, "You do not have permission to view progress", Toast.LENGTH_LONG).show();
                     }
 //                    Bundle args = new Bundle();
 //                    args.putSerializable("allUsers", (Serializable) allUsers);

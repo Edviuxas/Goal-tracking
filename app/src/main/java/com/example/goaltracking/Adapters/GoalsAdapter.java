@@ -41,7 +41,7 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
     private Context context;
     private User currentUser;
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
-    DatabaseReference goalsRef = database.getReference("Goals");
+//    DatabaseReference goalsRef = database.getReference("Goals");
     DatabaseReference usersRef = database.getReference("Users");
 
     public GoalsAdapter(List<Goal> goalsList, User currentUser, Context context) {
@@ -114,8 +114,9 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
                 if (checkBoxDone.isChecked()) {
 //                    removeGoalFromDatabase(position); //TODO: prieš ištrinant reiktų parodyti confirmation dialog https://stackoverflow.com/questions/5127407/how-to-implement-a-confirmation-yes-no-dialogpreference
                     Goal checkedGoal = (Goal) getItem(position);
-                    if (checkedGoal.isOkrGoalsDone()) {
-//                        goalsRef.child(goal.)
+                    List<String> sharedWith = checkedGoal.getSharedWith();
+                    for (int i = 0; i < sharedWith.stream().count(); i++) {
+
                     }
 //                    Toast.makeText(context, checkedGoal.toString(), Toast.LENGTH_SHORT).show();
                 }

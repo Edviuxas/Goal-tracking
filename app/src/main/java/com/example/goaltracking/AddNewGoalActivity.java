@@ -419,7 +419,7 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
                 okrVal = okrGoalValue.getText().toString();
                 okrDueDate = okrGoalDueDate.getText().toString();
                 okrDiff = String.valueOf(okrDifficulty.getSelectedItem().toString().split("\\s+")[1].charAt(1));
-                if (okrGoal != "" && okrVal != "" && okrDueDate != "" && okrDiff != "") {
+                if (!okrGoal.equals("") && !okrVal.equals("") && !okrDueDate.equals("") && !okrDiff.equals("")) {
                     addTableRow(okrGoal, okrVal, okrDueDate, okrDiff);
                     dialog.dismiss();
                 } else {
