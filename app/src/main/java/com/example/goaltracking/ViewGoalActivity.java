@@ -34,6 +34,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+
 public class ViewGoalActivity extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -43,12 +46,14 @@ public class ViewGoalActivity extends AppCompatActivity {
     TableLayout table;
     float scale;
     List<User> allUsers = new ArrayList<>();
+    ITransaction transaction;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_goal);
+        transaction = Sentry.startTransaction("displayOkrGoals", "task");
         scale = getResources().getDisplayMetrics().density;
 
         clickedGoal = (Goal) getIntent().getSerializableExtra("clickedGoal");
@@ -124,9 +129,6 @@ public class ViewGoalActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(ViewGoalActivity.this, "You do not have permission to view progress", Toast.LENGTH_LONG).show();
                     }
-//                    Bundle args = new Bundle();
-//                    args.putSerializable("allUsers", (Serializable) allUsers);
-//                    Toast.makeText(ViewGoalActivity.this, goalId, Toast.LENGTH_SHORT).show();
                 }
             });
             
@@ -203,6 +205,7 @@ public class ViewGoalActivity extends AppCompatActivity {
             tableRow.addView(dueDateText);
 
             table.addView(tableRow);
+            transaction.finish();
         }
     }
 }

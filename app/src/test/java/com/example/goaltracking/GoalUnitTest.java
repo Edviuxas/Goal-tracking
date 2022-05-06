@@ -122,7 +122,7 @@ public class GoalUnitTest {
         subGoals.add(subGoal3);
         subGoals.add(subGoal4);
         g.setOkrGoals(subGoals);
-        assertEquals(-3, g.calculatePoints());
+        assertEquals(-37, g.calculatePoints());
     }
 
     @Test

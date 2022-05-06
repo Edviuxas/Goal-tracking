@@ -28,6 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+
 public class CustomTeamsInvitationsAdapter extends BaseAdapter implements ListAdapter {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -36,6 +39,7 @@ public class CustomTeamsInvitationsAdapter extends BaseAdapter implements ListAd
     private User currentUser;
     private ArrayList<TeamInvitation> invitationsList = new ArrayList<>();
     private Context context;
+    ITransaction transaction;
 
     public CustomTeamsInvitationsAdapter(ArrayList<TeamInvitation> invitations, User currentUser, Context context) {
         this.invitationsList = invitations;
@@ -104,6 +108,7 @@ public class CustomTeamsInvitationsAdapter extends BaseAdapter implements ListAd
     }
 
     private void removeInvitationFromDatabase(int index) {
+        transaction = Sentry.startTransaction("removeInvitationFromDatabase", "task");
         TeamInvitation teamInvitation = invitationsList.get(index);
         Query invitationsQuery = invitationsRef.orderByChild("teamId").equalTo(teamInvitation.getTeamId());
         invitationsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,6 +119,7 @@ public class CustomTeamsInvitationsAdapter extends BaseAdapter implements ListAd
                         TeamInvitation inv = singleSnapshot.getValue(TeamInvitation.class);
                         if (inv.getTo().equals(currentUser.getEmailAddress())) {
                             singleSnapshot.getRef().removeValue();
+                            transaction.finish();
                         }
                     }
                 }

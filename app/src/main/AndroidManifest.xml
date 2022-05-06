@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="io.sentry.dsn" android:value="https://9b475aace78040eb98234e9da00a86c7@o1230687.ingest.sentry.io/6377537" />
+        <meta-data android:name="io.sentry.traces.sample-rate" android:value="1.0" />
+
         <activity
             android:name=".LoadingWindow"
             android:exported="true">

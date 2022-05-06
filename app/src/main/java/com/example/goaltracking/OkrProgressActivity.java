@@ -20,6 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+
 public class OkrProgressActivity extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -30,11 +33,13 @@ public class OkrProgressActivity extends AppCompatActivity {
     List<User> allUsers = new ArrayList<>();
     List<User> usersThatHaveGoal = new ArrayList<>();
     ListView listViewOkrProgress;
+    ITransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_okr_progress);
+        transaction = Sentry.startTransaction("dispayOkrProgress", "task");
 
         listViewOkrProgress = findViewById(R.id.listViewOkrProgress);
 
@@ -61,7 +66,6 @@ public class OkrProgressActivity extends AppCompatActivity {
                             userGoals.add(g);
                         }
                         user.setGoalsList(userGoals);
-//                        user.calculateLeaderboardPoints();
 
                         allUsers.add(user);
                     }
@@ -74,12 +78,12 @@ public class OkrProgressActivity extends AppCompatActivity {
                     }
                 }
                 progressAdapter.notifyDataSetChanged();
+                transaction.finish();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-//                Toast.makeText(AllGoalsActivity.this, databaseError.toException().toString(), Toast.LENGTH_SHORT).show();
+
             }
         };
 

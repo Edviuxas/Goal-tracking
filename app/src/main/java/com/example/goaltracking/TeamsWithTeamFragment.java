@@ -49,6 +49,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import io.sentry.ISpan;
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+
 public class TeamsWithTeamFragment extends Fragment {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -71,11 +75,13 @@ public class TeamsWithTeamFragment extends Fragment {
     View clickedEditTextDate;
     LeaderboardAdapter leaderboardAdapter;
     ListView listViewLeaderboard;
+    ITransaction transaction;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        transaction = Sentry.startTransaction("getUsers", "task");
 
         Bundle args = getArguments();
         currentUser = (User) args.getSerializable("currentUser");
@@ -87,7 +93,7 @@ public class TeamsWithTeamFragment extends Fragment {
                     usersEligibleForInvitation.clear();
                     allUsers.clear();
                     usersFromOneTeam.clear();
-                    // Get Post object and use the values to update the UI
+
                     for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         User user = singleSnapshot.getValue(User.class);
                         user.setId(singleSnapshot.getKey());
@@ -100,7 +106,6 @@ public class TeamsWithTeamFragment extends Fragment {
                             userGoals.add(g);
                         }
                         user.setGoalsList(userGoals);
-//                        user.calculateLeaderboardPoints();
 
                         allUsers.add(user);
                         if (!belongsToTeam(user) && !isCurrentUser(user))
@@ -108,28 +113,16 @@ public class TeamsWithTeamFragment extends Fragment {
 
                         if (user.getBelongsToTeam().equals(currentUser.getBelongsToTeam()))
                             usersFromOneTeam.add(user);
-
-//                        if (user.getId().equals(currentUser.getId())) {
-//                            DataSnapshot goalsSnapshot = singleSnapshot.child("Goals");
-//                            for (DataSnapshot ds : goalsSnapshot.getChildren()) {
-//                                Goal g = ds.getValue(Goal.class);
-//                                currentUserGoals.add(g);
-//                                Toast.makeText(getContext(), g.getGoal(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                        for (int i = 0; i < goalsSnapshot.getChildrenCount(); i++) {
-//
-//                        }
                     }
                     Collections.sort(allUsers, (User user1, User user2) -> user2.calculateLeaderboardPoints("", "") - user1.calculateLeaderboardPoints("", ""));
                     leaderboardAdapter.notifyDataSetChanged();
+                    transaction.finish();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-//                Toast.makeText(AllGoalsActivity.this, databaseError.toException().toString(), Toast.LENGTH_SHORT).show();
+
             }
         };
 
@@ -141,9 +134,7 @@ public class TeamsWithTeamFragment extends Fragment {
                     usersEligibleForInvitation.clear();
                     usersEligibleForInvitation.addAll(allUsers);
                     usersEligibleForInvitation.removeIf(u -> u.getId().equals(currentUser.getId()));
-//                    usersEligibleForInvitation.clear();
-                    // Get Post object and use the values to update the UI
-//                    usersEligibleForInvitation.addAll(allUsers);
+
                     for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         TeamInvitation invitation = singleSnapshot.getValue(TeamInvitation.class);
 
@@ -160,8 +151,7 @@ public class TeamsWithTeamFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-//                Toast.makeText(AllGoalsActivity.this, databaseError.toException().toString(), Toast.LENGTH_SHORT).show();
+
             }
         };
 
@@ -211,8 +201,6 @@ public class TeamsWithTeamFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_teams_with_team, container, false);
 
         dateFrom = view.findViewById(R.id.editTextFromDate);
@@ -232,7 +220,6 @@ public class TeamsWithTeamFragment extends Fragment {
                     leaderboardAdapter = new LeaderboardAdapter(usersFromOneTeam, view.getContext(), currentUser, dateFromStr, dateToStr);
                     listViewLeaderboard.setAdapter(leaderboardAdapter);
                 }
-//                textDate.setText(myCalendar.getTime().toString());
             }
         };
 
@@ -244,20 +231,6 @@ public class TeamsWithTeamFragment extends Fragment {
                 datePickerDialog.show();
             }
         };
-
-//        TextView textLeaderboard = view.findViewById(R.id.textViewLeaderboard);
-//        textLeaderboard.setTooltipText("This is how points are calculated:\n" +
-//                                        "If you finish a task before due date,\n" +
-//                                        "you receive (difficulty * days before due date) points\n" +
-//                                        "If you finish on due date, you receive 0 points\n" +
-//                                        "If you are late, you get negative (2 * days past due date) points");
-//
-//        textLeaderboard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                textLeaderboard.performLongClick();
-//            }
-//        });
 
         listViewLeaderboard = view.findViewById(R.id.listViewLeaderboard);
         autoCompleteTextView = view.findViewById(R.id.autoComplete);

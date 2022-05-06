@@ -22,6 +22,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import io.sentry.ISpan;
+import io.sentry.Sentry;
+
 public class ActivityMainWindow extends AppCompatActivity {
 
     FloatingActionButton fab;
@@ -31,6 +34,7 @@ public class ActivityMainWindow extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference teamsRef = database.getReference("Teams");
     DatabaseReference usersRef = database.getReference("Users");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

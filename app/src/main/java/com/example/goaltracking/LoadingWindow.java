@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.goaltracking.Model.Goal;
 import com.example.goaltracking.Model.User;
@@ -25,6 +26,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+
 public class LoadingWindow extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -35,10 +39,13 @@ public class LoadingWindow extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private User currentUser;
     String fcmToken;
+    ITransaction transaction;
 
     @Override
     protected void onStart() {
         super.onStart();
+        Sentry.captureMessage("testing SDK setup");
+        transaction = Sentry.startTransaction("authentication", "task");
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -49,13 +56,9 @@ public class LoadingWindow extends AppCompatActivity {
                             return;
                         }
 
-                        // Get new FCM registration token
                         fcmToken = task.getResult();
 
-                        // Log and toast
-//                        String msg = getString(R.string.msg_token_fmt, token);
                         Log.d("token", fcmToken);
-//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -80,8 +83,9 @@ public class LoadingWindow extends AppCompatActivity {
                         currentUser.setGoalsList(userGoals);
                         usersRef.child(uid).child("fcmToken").setValue(fcmToken);
 
-//                        Toast.makeText(this, user.getDisplayName(), Toast.LENGTH_SHORT).show();
                         loadMainWindow();
+                    } else {
+                        Toast.makeText(LoadingWindow.this, "There was an error logging in", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -97,7 +101,6 @@ public class LoadingWindow extends AppCompatActivity {
 
     private void loadLoginWindow() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         intent.putExtra("currentUser", currentUser);
         startActivity(intent);
     }
@@ -107,6 +110,7 @@ public class LoadingWindow extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         intent.putExtra("currentUser", currentUser);
         startActivity(intent);
+        transaction.finish();
         this.finish();
     }
 

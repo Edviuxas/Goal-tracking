@@ -20,6 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+
 public class TeamsNoTeamFragment extends Fragment {
 
     User currentUser = null;
@@ -28,14 +31,16 @@ public class TeamsNoTeamFragment extends Fragment {
     DatabaseReference invitationsRef = database.getReference("PendingTeamRequests");
     CustomTeamsInvitationsAdapter adapter;
     ListView listView;
+    ITransaction transaction;
 
     public TeamsNoTeamFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        transaction = Sentry.startTransaction("displayInvitations", "task");
 
         Bundle args = getArguments();
         currentUser = (User) args.getSerializable("currentUser");
@@ -53,13 +58,12 @@ public class TeamsNoTeamFragment extends Fragment {
                     }
                 }
                 adapter.notifyDataSetChanged();
-//                populateInvitationsListView();
+                transaction.finish();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-//                Toast.makeText(AllGoalsActivity.this, databaseError.toException().toString(), Toast.LENGTH_SHORT).show();
+
             }
         };
         invitationsRef.addValueEventListener(invitationsListener);

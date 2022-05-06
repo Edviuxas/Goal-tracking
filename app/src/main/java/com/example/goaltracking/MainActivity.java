@@ -41,63 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private User currentUser;
     String fcmToken;
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        FirebaseMessaging.getInstance().getToken()
-//                .addOnCompleteListener(new OnCompleteListener<String>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<String> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
-//                            return;
-//                        }
-//
-//                        // Get new FCM registration token
-//                        fcmToken = task.getResult();
-//
-//                        // Log and toast
-////                        String msg = getString(R.string.msg_token_fmt, token);
-//                        Log.d("token", fcmToken);
-////                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//        FirebaseUser user = mAuth.getCurrentUser();
-//        if (user != null) {
-//            String uid = user.getUid();
-//            Query query = usersRef.orderByKey().equalTo(uid);
-//            query.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    if (snapshot.exists()) {
-//                        currentUser = snapshot.child(uid).getValue(User.class);
-//                        currentUser.setId(uid);
-//
-//                        List<Goal> userGoals = new ArrayList<>();
-//                        DataSnapshot goalsSnapshot = snapshot.child(uid).child("Goals");
-//                        for (DataSnapshot ds : goalsSnapshot.getChildren()) {
-//                            Goal g = ds.getValue(Goal.class);
-//                            g.setGoalId(ds.getKey());
-//                            userGoals.add(g);
-//                        }
-//                        currentUser.setGoalsList(userGoals);
-//                        usersRef.child(uid).child("fcmToken").setValue(fcmToken);
-//
-////                        Toast.makeText(this, user.getDisplayName(), Toast.LENGTH_SHORT).show();
-//                        loadMainWindow();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
-//        }
-//    }
-//
     private void loadMainWindow() {
         Intent intent = new Intent(getApplicationContext(), ActivityMainWindow.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
@@ -141,17 +84,14 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null) {
                     firebaseAuthWithGoogle(account.getIdToken());
                 }
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }

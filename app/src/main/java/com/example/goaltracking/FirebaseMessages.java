@@ -28,18 +28,9 @@ public class FirebaseMessages extends FirebaseMessagingService {
     }
 
     private void generateNotification(@NonNull RemoteMessage remoteMessage) {
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1410, intent,
-//                PendingIntent.FLAG_ONE_SHOT);
-
-//        Intent intent=new Intent(this, LoadingWindow.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT)
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String CHANNEL_ID = "my_channel_01";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//            CHANNEL_ID = "my_channel_01";
             CharSequence name = "my_channel";
             String Description = "This is my channel";
             int importance = NotificationManager.IMPORTANCE_HIGH;

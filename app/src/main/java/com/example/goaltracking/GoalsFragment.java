@@ -32,23 +32,26 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.sentry.ISpan;
+import io.sentry.ITransaction;
+import io.sentry.Sentry;
+
 public class GoalsFragment extends Fragment {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
-    DatabaseReference goalsRef = database.getReference("Goals");
-    DatabaseReference responsibleUsersRef = database.getReference("ResponsibleUsers");
     DatabaseReference usersRef = database.getReference("Users");
     ArrayList<Goal> currentUserGoals = new ArrayList<>();
-    ArrayList<Goal> allGoals = new ArrayList<>();
     ListView listViewGoals;
     GoalsAdapter adapter;
     Goal clickedGoal;
     User currentUser;
+    ITransaction transaction;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        transaction = Sentry.startTransaction("getGoals", "task");
 
         Bundle args = getArguments();
         currentUser = (User) args.getSerializable("currentUser");
@@ -58,16 +61,16 @@ public class GoalsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUserGoals.clear();
-//                currentUserGoals.removeIf(g -> g.getIdCreatedBy().equals(currentUser.getId()));
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
 
                     Goal goal = singleSnapshot.getValue(Goal.class);
                     goal.setGoalId(singleSnapshot.getKey());
-                    //allGoals.add(goal);
-                    currentUserGoals.add(goal);
+                    if (!goal.getDone())
+                        currentUserGoals.add(goal);
                 }
                 currentUser.setGoalsList(currentUserGoals);
                 adapter.notifyDataSetChanged();
+                transaction.finish();
             }
 
             @Override
@@ -177,7 +180,6 @@ public class GoalsFragment extends Fragment {
                 intent.putExtra("clickedGoal", clickedGoal);
                 intent.putExtra("currentUser", currentUser);
                 startActivity(intent);
-//                Toast.makeText(getContext(), clickedGoal.getGoal() + " " + clickedGoal.getGoalId(), Toast.LENGTH_SHORT).show();
             }
         });
 

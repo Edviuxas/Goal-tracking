@@ -71,15 +71,11 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
     float scale;
     MaterialButtonToggleGroup materialButtonToggleGroup;
     int selectedRowId;
-//    ToggleSwitch toggleSwitch;
     ContactsCompletionView contactsCompletionView;
     Spinner spinnerNotificationPeriod;
 
-//    GoogleSignInAccount googleAccount;
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
-    DatabaseReference goalsRef = database.getReference("Goals");
     DatabaseReference usersRef = database.getReference("Users");
-    DatabaseReference responsibleUsersRef = database.getReference("ResponsibleUsers");
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -131,15 +127,12 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     usersEligibleForInvitation.clear();
-                    // Get Post object and use the values to update the UI
                     for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         String userId = singleSnapshot.getKey();
                         User user = singleSnapshot.getValue(User.class);
                         user.setId(userId);
-                        if (!user.getEmailAddress().equals(currentUser.getEmailAddress()) && user.getBelongsToTeam().equals(currentUser.getBelongsToTeam())) {
+                        if (!user.getEmailAddress().equals(currentUser.getEmailAddress()) && user.getBelongsToTeam().equals(currentUser.getBelongsToTeam()))
                             usersEligibleForInvitation.add(user);
-//                            invitationsAdapter.getFilter().filter(autoCompleteResponsibleUsers.getText(), null);
-                        }
                     }
                     usersAdapter.notifyDataSetChanged();
                 }
@@ -147,8 +140,7 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-//                Toast.makeText(AllGoalsActivity.this, databaseError.toException().toString(), Toast.LENGTH_SHORT).show();
+
             }
         };
 
@@ -159,7 +151,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
                 myCalendar.set(Calendar.MONTH,month);
                 myCalendar.set(Calendar.DAY_OF_MONTH,day);
                 updateDateEditText(textDate);
-//                textDate.setText(myCalendar.getTime().toString());
             }
         };
         textDate.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +163,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
         });
 
         checkIsImportant = findViewById(R.id.checkIsImportant);
-//        googleAccount = GoogleSignIn.getLastSignedInAccount(this);
         usersRef.addValueEventListener(usersListener);
 
         if (editingMode) {
@@ -188,7 +178,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
                 addTableRow(okrGoal.getGoal(), Integer.toString(okrGoal.getValue()), okrGoal.getDueDate(), String.valueOf(okrGoal.getDifficulty()));
             }
         }
-//        Toast.makeText(this, googleAccount.getGivenName() + " " + googleAccount.getFamilyName(), Toast.LENGTH_SHORT).show();
     }
 
     private void disableMaterialButtonGroup() {
@@ -276,7 +265,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
         goalText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
         TableRow.LayoutParams params1 = new TableRow.LayoutParams(0, trHeight, 0.4f);
         goalText.setGravity(Gravity.CENTER_VERTICAL);
-//        goalText.setBackgroundResource(R.drawable.border);
         goalText.setLayoutParams(params1);
 
         TextView valueText = new TextView(this);
@@ -284,7 +272,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
         valueText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
         TableRow.LayoutParams params2 = new TableRow.LayoutParams(0, trHeight, 0.2f);
         valueText.setGravity(Gravity.CENTER_VERTICAL);
-//        valueText.setBackgroundResource(R.drawable.border);
         valueText.setLayoutParams(params2);
 
         TextView dueDateText = new TextView(this);
@@ -292,7 +279,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
         dueDateText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
         TableRow.LayoutParams params3 = new TableRow.LayoutParams(0, trHeight, 0.27f);
         dueDateText.setGravity(Gravity.CENTER_VERTICAL);
-//        dueDateText.setBackgroundResource(R.drawable.border);
         dueDateText.setLayoutParams(params3);
 
         TableRow.LayoutParams params4 = new TableRow.LayoutParams(0, trHeight - ((int) (20 * scale + 0.5f)), 0.13f);
@@ -301,24 +287,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
         difficultyText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
         difficultyText.setGravity(Gravity.CENTER);
         difficultyText.setLayoutParams(params4);
-//        Button addBtn = new Button(this);
-//        addBtn.setId(okrTable.getChildCount());
-//        addBtn.setTag(textGoal);
-//        addBtn.setText("X");
-//        addBtn.setBackgroundResource(R.drawable.border);
-//        addBtn.setLayoutParams(params4);
-
-//        addBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Button clickedButton = (Button) view;
-//                int rowId = clickedButton.getId();
-//                okrTable.removeViewAt(rowId);
-//
-//                decreaseAllButtonIds(rowId);
-//                Toast.makeText(AddNewGoalActivity.this, ((Button)view).getTag().toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         tableRow.addView(goalText);
         tableRow.addView(valueText);
@@ -330,9 +298,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
         okrTable.addView(tableRow);
         registerForContextMenu(tableRow);
 
-//        editTextGoal.setText("");
-//        editTextValue.setText("");
-//        editTextGoal.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.tableOKR).getWindowToken(), 0);
     }
@@ -399,7 +364,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
                 myCalendar.set(Calendar.MONTH,month);
                 myCalendar.set(Calendar.DAY_OF_MONTH,day);
                 updateDateEditText(okrGoalDueDate);
-//                textDate.setText(myCalendar.getTime().toString());
             }
         };
         okrGoalDueDate.setOnClickListener(new View.OnClickListener() {

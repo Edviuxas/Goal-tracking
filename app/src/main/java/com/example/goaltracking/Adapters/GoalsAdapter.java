@@ -41,8 +41,8 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
     private Context context;
     private User currentUser;
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
-//    DatabaseReference goalsRef = database.getReference("Goals");
     DatabaseReference usersRef = database.getReference("Users");
+    Boolean allUsersFinishedOkrGoals;
 
     public GoalsAdapter(List<Goal> goalsList, User currentUser, Context context) {
         this.goalsList = goalsList;
@@ -95,8 +95,6 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
         else
             exclamationImage.setVisibility(View.INVISIBLE);
 
-//        ConstraintSet constraintSet = new ConstraintSet();
-//        constraintSet.clone(constraintLayout);
         if (!goal.getIdCreatedBy().equals(currentUser.getId())) {
             sharedImage.setVisibility(View.VISIBLE);
             checkBoxDone.setVisibility(View.INVISIBLE);
@@ -105,21 +103,49 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
             sharedImage.setVisibility(View.INVISIBLE);
             checkBoxDone.setVisibility(View.VISIBLE);
         }
-//        constraintSet.connect(R.id.textGoalText, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 8);
-//        constraintSet.applyTo(constraintLayout);
 
         checkBoxDone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (checkBoxDone.isChecked()) {
-//                    removeGoalFromDatabase(position); //TODO: prieš ištrinant reiktų parodyti confirmation dialog https://stackoverflow.com/questions/5127407/how-to-implement-a-confirmation-yes-no-dialogpreference
                     Goal checkedGoal = (Goal) getItem(position);
-                    List<String> sharedWith = checkedGoal.getSharedWith();
-                    for (int i = 0; i < sharedWith.stream().count(); i++) {
 
+                    allUsersFinishedOkrGoals = true;
+                    List<String> sharedWith = checkedGoal.getSharedWith();
+                    if (sharedWith != null) {
+                        for (int i = 0; i < sharedWith.stream().count(); i++) {
+                            Query goalsQuery = usersRef.child(sharedWith.get(i)).child("Goals").orderByKey().equalTo(goal.getGoalId());
+                            goalsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
+                                            Goal goal = singleSnapshot.getValue(Goal.class);
+                                            List<Goal> okrGoals = goal.getOkrGoals();
+                                            for (int j = 0; j < okrGoals.stream().count(); j++) {
+                                                if (!okrGoals.get(j).getDone())
+                                                    allUsersFinishedOkrGoals = false;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
                     }
-//                    Toast.makeText(context, checkedGoal.toString(), Toast.LENGTH_SHORT).show();
+                    if (allUsersFinishedOkrGoals) {
+                        for (int i = 0; i < sharedWith.stream().count(); i++) {
+                            usersRef.child(sharedWith.get(i)).child("Goals").child(checkedGoal.getGoalId()).child("done").setValue(true);
+                        }
+                        usersRef.child(currentUser.getId()).child("Goals").child(checkedGoal.getGoalId()).child("done").setValue(true);
+                        goalsList.remove(checkedGoal);
+                    }
                 }
+                notifyDataSetChanged();
             }
         });
 
@@ -128,26 +154,5 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
         }
 
         return v;
-    }
-
-    private void removeGoalFromDatabase(int index) {
-        Goal goal = goalsList.get(index);
-        Query goalsQuery = usersRef.child(currentUser.getId()).child("Goals").orderByKey().equalTo(goal.getGoalId());
-        goalsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot singleSnapshot: snapshot.getChildren()) {
-                        singleSnapshot.getRef().removeValue();
-                    }
-                }
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 }
