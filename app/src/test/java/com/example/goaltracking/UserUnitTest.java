@@ -48,7 +48,7 @@ public class UserUnitTest {
         allGoals.add(goal1);
         allGoals.add(goal2);
         user.setGoalsList(allGoals);
-        assertEquals(-37, user.calculateLeaderboardPoints("2022/04/01", "2022/04/30"));
+        assertEquals(-43, user.calculateLeaderboardPoints("2022/04/01", "2022/04/30"));
     }
 
     @Test
@@ -89,6 +89,6 @@ public class UserUnitTest {
         allGoals.add(goal1);
         allGoals.add(goal2);
         user.setGoalsList(allGoals);
-        assertEquals(-37, user.calculateLeaderboardPoints("", ""));
+        assertEquals(-43, user.calculateLeaderboardPoints("", ""));
     }
 }

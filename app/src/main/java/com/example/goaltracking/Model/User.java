@@ -106,11 +106,17 @@ public class User implements Serializable {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public int calculateLeaderboardPoints(String dateFromStr, String dateToStr){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        Date currentDate = null;
+        try {
+            currentDate = sdf.parse(sdf.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         int sum = 0;
         for (int i = 0; i < goals.stream().count(); i++) {
             Goal g = goals.get(i);
             if (!dateFromStr.equals("") && !dateToStr.equals("")) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
                 Date dateCreated, dateFrom, dateTo = null;
                 try {
                     dateCreated = sdf.parse(g.getDateCreated());
@@ -118,13 +124,14 @@ public class User implements Serializable {
                     dateTo = sdf.parse(dateToStr);
 
                     if (dateCreated.after(dateFrom) && dateCreated.before(dateTo)) {
-                        sum += g.calculatePoints();
+
+                        sum += g.calculatePoints(currentDate);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             } else {
-                sum += g.calculatePoints();
+                sum += g.calculatePoints(currentDate);
             }
         }
         return sum;

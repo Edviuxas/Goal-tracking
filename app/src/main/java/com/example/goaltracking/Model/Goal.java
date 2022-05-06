@@ -223,16 +223,18 @@ public class Goal implements Serializable {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @com.google.firebase.database.Exclude
-    public int calculatePoints() {
+    public int calculatePoints(Date date) {
         int sum = 0;
 
+        Date currentDate = date;
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
-        Date currentDate = null;
-        try {
-            currentDate = sdf.parse(sdf.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        Date currentDate = null;
+//        try {
+//            currentDate = sdf.parse(sdf.format(new Date()));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         for (int i = 0; i < okrGoals.stream().count(); i++) {
             Date dateDone = null;

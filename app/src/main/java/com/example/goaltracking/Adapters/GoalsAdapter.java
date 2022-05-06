@@ -143,6 +143,8 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
                         }
                         usersRef.child(currentUser.getId()).child("Goals").child(checkedGoal.getGoalId()).child("done").setValue(true);
                         goalsList.remove(checkedGoal);
+                    } else {
+                        Toast.makeText(context, "Not all users have finished this goal", Toast.LENGTH_SHORT).show();
                     }
                 }
                 notifyDataSetChanged();

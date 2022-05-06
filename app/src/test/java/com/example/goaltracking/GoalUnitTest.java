@@ -4,8 +4,15 @@ import com.example.goaltracking.Model.Goal;
 
 import org.junit.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+
 import static org.junit.Assert.*;
 
 public class GoalUnitTest {
@@ -76,6 +83,13 @@ public class GoalUnitTest {
 
     @Test
     public void goalPointsAllEarly3Points() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        Date currentDate = null;
+        try {
+            currentDate = sdf.parse(sdf.format(new Date("2022/05/06")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Goal g = new Goal();
         Goal subGoal1 = new Goal();
         Goal subGoal2 = new Goal();
@@ -91,11 +105,18 @@ public class GoalUnitTest {
         subGoals.add(subGoal1);
         subGoals.add(subGoal2);
         g.setOkrGoals(subGoals);
-        assertEquals(3, g.calculatePoints());
+        assertEquals(3, g.calculatePoints(currentDate));
     }
 
     @Test
     public void goalPointsMixedNegative3() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        Date currentDate = null;
+        try {
+            currentDate = sdf.parse(sdf.format(new Date("2022/05/06")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Goal g = new Goal();
         Goal subGoal1 = new Goal();
         Goal subGoal2 = new Goal();
@@ -122,7 +143,7 @@ public class GoalUnitTest {
         subGoals.add(subGoal3);
         subGoals.add(subGoal4);
         g.setOkrGoals(subGoals);
-        assertEquals(-37, g.calculatePoints());
+        assertEquals(-43, g.calculatePoints(currentDate));
     }
 
     @Test
