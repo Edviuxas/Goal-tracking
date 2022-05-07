@@ -110,17 +110,7 @@ public class ViewGoalActivity extends AppCompatActivity {
                     String goalId = clickedRow.getTag().toString();
                     int okrId = clickedRow.getId();
 
-                    Boolean isEligibleToViewProgress = false;
-                    List<Goal> goalsList = currentUser.getGoalsList();
-                    for (int i = 0; i < goalsList.stream().count(); i++) {
-                        Goal singleGoal = goalsList.get(i);
-                        if (singleGoal.getGoalId().equals(goalId)) {
-                            if (singleGoal.getIdCreatedBy().equals(currentUser.getId()) || singleGoal.getShowProgressToEveryone())
-                                isEligibleToViewProgress = true;
-                        }
-                    }
-
-                    if (isEligibleToViewProgress) {
+                    if (currentUser.isEligibleToViewOkrProgress(goalId)) {
                         Intent intent = new Intent(getApplicationContext(), OkrProgressActivity.class);
                         intent.putExtra("goalId", goalId);
                         intent.putExtra("okrId", okrId);

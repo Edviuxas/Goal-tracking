@@ -105,14 +105,9 @@ public class User implements Serializable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public int calculateLeaderboardPoints(String dateFromStr, String dateToStr){
+    public int calculateLeaderboardPoints(String dateFromStr, String dateToStr, Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
-        Date currentDate = null;
-        try {
-            currentDate = sdf.parse(sdf.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Date currentDate = date;
         int sum = 0;
         for (int i = 0; i < goals.stream().count(); i++) {
             Goal g = goals.get(i);
@@ -135,5 +130,17 @@ public class User implements Serializable {
             }
         }
         return sum;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Boolean isEligibleToViewOkrProgress(String goalId) {
+        for (int i = 0; i < goals.stream().count(); i++) {
+            Goal singleGoal = goals.get(i);
+            if (singleGoal.getGoalId().equals(goalId)) {
+                if (singleGoal.getIdCreatedBy().equals(id) || singleGoal.getShowProgressToEveryone())
+                    return true;
+            }
+        }
+        return false;
     }
 }

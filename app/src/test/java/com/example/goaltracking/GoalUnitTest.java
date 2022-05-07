@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class GoalUnitTest {
     @Test
-    public void goalIsInProgressReturnsTrue() {
+    public void goalIsInProgressShouldReturnTrue() {
         Goal g = new Goal();
         Goal subGoal = new Goal();
         subGoal.setDone(true);
@@ -28,7 +28,7 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void goalNotInProgressReturnsFalse() {
+    public void goalNotInProgressShouldReturnFalse() {
         Goal g = new Goal();
         Goal subGoal1 = new Goal();
         subGoal1.setDone(false);
@@ -42,13 +42,13 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void goalNoSubGoalsReturnsFalse() {
+    public void goalNoSubGoalsShouldReturnFalse() {
         Goal g = new Goal();
         assertEquals(false, g.isInProgress());
     }
 
     @Test
-    public void goalOkrsDoneReturnsTrue() {
+    public void goalOkrsDoneShouldReturnTrue() {
         Goal g = new Goal();
         Goal subGoal1 = new Goal();
         subGoal1.setDone(true);
@@ -62,7 +62,7 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void goalOkrsNotDoneReturnsFalse() {
+    public void goalOkrsNotDoneShouldReturnFalse() {
         Goal g = new Goal();
         Goal subGoal1 = new Goal();
         subGoal1.setDone(true);
@@ -76,13 +76,13 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void goalNoOkrsReturnsFalse() {
+    public void goalNoOkrsShouldReturnFalse() {
         Goal g = new Goal();
         assertEquals(false, g.isOkrGoalsDone());
     }
 
     @Test
-    public void goalPointsAllEarly3Points() {
+    public void goalPointsAllEarlyShouldReturn3Points() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         Date currentDate = null;
         try {
@@ -109,7 +109,7 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void goalPointsMixedNegative3() {
+    public void goalPointsMixedShouldReturnNegative43() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         Date currentDate = null;
         try {
@@ -144,73 +144,5 @@ public class GoalUnitTest {
         subGoals.add(subGoal4);
         g.setOkrGoals(subGoals);
         assertEquals(-43, g.calculatePoints(currentDate));
-    }
-
-    @Test
-    public void goalOkrDoneReturnTrue() {
-        Goal goal = new Goal();
-        Goal subGoal1 = new Goal();
-        Goal subGoal2 = new Goal();
-        subGoal1.setDone(true);
-        subGoal2.setDone(true);
-        List<Goal> subGoals = new ArrayList<>();
-        subGoals.add(subGoal1);
-        subGoals.add(subGoal2);
-        goal.setOkrGoals(subGoals);
-        assertEquals(true, goal.isOkrGoalsDone());
-    }
-
-    @Test
-    public void goalOkrNotDoneReturnFalse() {
-        Goal goal = new Goal();
-        Goal subGoal1 = new Goal();
-        Goal subGoal2 = new Goal();
-        subGoal1.setDone(false);
-        subGoal2.setDone(true);
-        List<Goal> subGoals = new ArrayList<>();
-        subGoals.add(subGoal1);
-        subGoals.add(subGoal2);
-        goal.setOkrGoals(subGoals);
-        assertEquals(false, goal.isOkrGoalsDone());
-    }
-
-    @Test
-    public void goalNoOkrReturnsFalse() {
-        Goal goal = new Goal();
-        assertEquals(false, goal.isOkrGoalsDone());
-    }
-
-    @Test
-    public void goalOkrInProgressReturnsTrue() {
-        Goal goal = new Goal();
-        Goal subGoal1 = new Goal();
-        Goal subGoal2 = new Goal();
-        subGoal1.setDone(true);
-        subGoal2.setDone(false);
-        List<Goal> subGoals = new ArrayList<>();
-        subGoals.add(subGoal1);
-        subGoals.add(subGoal2);
-        goal.setOkrGoals(subGoals);
-        assertEquals(true, goal.isInProgress());
-    }
-
-    @Test
-    public void goalOkrNotInProgressReturnsFalse() {
-        Goal goal = new Goal();
-        Goal subGoal1 = new Goal();
-        Goal subGoal2 = new Goal();
-        subGoal1.setDone(false);
-        subGoal2.setDone(false);
-        List<Goal> subGoals = new ArrayList<>();
-        subGoals.add(subGoal1);
-        subGoals.add(subGoal2);
-        goal.setOkrGoals(subGoals);
-        assertEquals(false, goal.isInProgress());
-    }
-
-    @Test
-    public void goalInProgressNoOkrGoalsReturnsFalse() {
-        Goal goal = new Goal();
-        assertEquals(false, goal.isInProgress());
     }
 }

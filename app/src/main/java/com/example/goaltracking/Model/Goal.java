@@ -229,12 +229,6 @@ public class Goal implements Serializable {
         Date currentDate = date;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
-//        Date currentDate = null;
-//        try {
-//            currentDate = sdf.parse(sdf.format(new Date()));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
 
         for (int i = 0; i < okrGoals.stream().count(); i++) {
             Date dateDone = null;

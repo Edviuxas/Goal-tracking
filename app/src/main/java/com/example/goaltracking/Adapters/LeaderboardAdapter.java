@@ -15,8 +15,12 @@ import androidx.annotation.RequiresApi;
 import com.example.goaltracking.Model.User;
 import com.example.goaltracking.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class LeaderboardAdapter extends BaseAdapter implements ListAdapter {
     private List<User> data;
@@ -52,6 +56,14 @@ public class LeaderboardAdapter extends BaseAdapter implements ListAdapter {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        Date currentDate = null;
+        try {
+            currentDate = sdf.parse(sdf.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         View v = view;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -62,7 +74,7 @@ public class LeaderboardAdapter extends BaseAdapter implements ListAdapter {
         TextView textPointsLeaderboard = v.findViewById(R.id.textViewPointsLeaderboard);
 
         textUserLeaderboard.setText(data.get(i).getEmailAddress());
-        textPointsLeaderboard.setText(String.valueOf(data.get(i).calculateLeaderboardPoints(dateFrom, dateTo)) + " pts");
+        textPointsLeaderboard.setText(String.valueOf(data.get(i).calculateLeaderboardPoints(dateFrom, dateTo, currentDate)) + " pts");
         return v;
     }
 }

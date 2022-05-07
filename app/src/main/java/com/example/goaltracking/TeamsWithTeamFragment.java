@@ -39,11 +39,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -76,6 +78,7 @@ public class TeamsWithTeamFragment extends Fragment {
     LeaderboardAdapter leaderboardAdapter;
     ListView listViewLeaderboard;
     ITransaction transaction;
+    Date currentDate;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -90,6 +93,13 @@ public class TeamsWithTeamFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+                    try {
+                        currentDate = sdf.parse(sdf.format(new Date()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     usersEligibleForInvitation.clear();
                     allUsers.clear();
                     usersFromOneTeam.clear();
@@ -114,7 +124,7 @@ public class TeamsWithTeamFragment extends Fragment {
                         if (user.getBelongsToTeam().equals(currentUser.getBelongsToTeam()))
                             usersFromOneTeam.add(user);
                     }
-                    Collections.sort(allUsers, (User user1, User user2) -> user2.calculateLeaderboardPoints("", "") - user1.calculateLeaderboardPoints("", ""));
+                    Collections.sort(allUsers, (User user1, User user2) -> user2.calculateLeaderboardPoints("", "", currentDate) - user1.calculateLeaderboardPoints("", "", currentDate));
                     leaderboardAdapter.notifyDataSetChanged();
                     transaction.finish();
                 }
@@ -209,6 +219,13 @@ public class TeamsWithTeamFragment extends Fragment {
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+                try {
+                    currentDate = sdf.parse(sdf.format(new Date()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH,month);
                 myCalendar.set(Calendar.DAY_OF_MONTH,day);
@@ -216,7 +233,7 @@ public class TeamsWithTeamFragment extends Fragment {
                 if (!dateFrom.getText().toString().equals("") && !dateTo.getText().toString().equals("")) {
                     String dateFromStr = dateFrom.getText().toString();
                     String dateToStr = dateTo.getText().toString();
-                    Collections.sort(allUsers, (User user1, User user2) -> user2.calculateLeaderboardPoints(dateFromStr, dateToStr) - user1.calculateLeaderboardPoints(dateFromStr, dateToStr));
+                    Collections.sort(allUsers, (User user1, User user2) -> user2.calculateLeaderboardPoints(dateFromStr, dateToStr, currentDate) - user1.calculateLeaderboardPoints(dateFromStr, dateToStr, currentDate));
                     leaderboardAdapter = new LeaderboardAdapter(usersFromOneTeam, view.getContext(), currentUser, dateFromStr, dateToStr);
                     listViewLeaderboard.setAdapter(leaderboardAdapter);
                 }
