@@ -61,8 +61,6 @@ public class TeamsWithTeamFragment extends Fragment {
     DatabaseReference usersRef = database.getReference("Users");
     DatabaseReference pendingTeamRequestsRef = database.getReference("PendingTeamRequests");
     User currentUser;
-//    List<Goal> currentUserGoals = new ArrayList<>();
-    List<Goal> teamGoals = new ArrayList<>();
     List<User> usersEligibleForInvitation = new ArrayList<>();
     List<User> allUsers = new ArrayList<>();
     List<User> usersFromOneTeam = new ArrayList<>();
@@ -264,8 +262,8 @@ public class TeamsWithTeamFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AutoCompleteTextView textEmailAddress = getView().findViewById(R.id.autoComplete);
-                String toEmailAddress = String.valueOf(textEmailAddress.getText()); //TODO: .split("\\s+")[2] naudojamas laikinai, gali crashint. reikia padaryt kaip nors protingiau
-                TeamInvitation teamInvitation = new TeamInvitation(currentUser.getEmailAddress(), toEmailAddress, currentUser.getBelongsToTeam(), "Random team name"); // TODO: padaryti, kad rodytų normalų komandos pavadinimą
+                String toEmailAddress = String.valueOf(textEmailAddress.getText());
+                TeamInvitation teamInvitation = new TeamInvitation(currentUser.getEmailAddress(), toEmailAddress, currentUser.getBelongsToTeam(), "Random team name");
 
                 String key = pendingTeamRequestsRef.push().getKey();
                 pendingTeamRequestsRef.child(key).setValue(teamInvitation);

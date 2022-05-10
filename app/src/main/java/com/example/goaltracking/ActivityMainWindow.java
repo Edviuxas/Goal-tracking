@@ -94,7 +94,7 @@ public class ActivityMainWindow extends AppCompatActivity {
             intent.putExtra("currentUser", currentUser);
             intent.putExtra("editingMode", false);
 
-            startActivityForResult(intent, RC_ADD_GOAL); // TODO: reiktų pakeisti kažkuo, kad nebūtų deprecated (registerForActivityResult)
+            startActivityForResult(intent, RC_ADD_GOAL);
         } else {
             showAlertDialog();
         }
@@ -125,7 +125,6 @@ public class ActivityMainWindow extends AppCompatActivity {
                 Fragment fragment = new TeamsWithTeamFragment();
                 fragment.setArguments(args);
                 getSupportFragmentManager().beginTransaction().replace(R.id.placeholder, fragment).commit();
-                //TODO pakeisti fragmentą, kurį mato vartotojas
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -141,10 +140,5 @@ public class ActivityMainWindow extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RC_ADD_GOAL) {
-            String returnedInfo = data.getStringExtra("goalInfo");
-//            Toast.makeText(this, returnedInfo, Toast.LENGTH_LONG).show();
-        }
     }
 }

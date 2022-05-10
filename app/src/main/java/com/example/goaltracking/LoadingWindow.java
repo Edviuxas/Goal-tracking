@@ -34,7 +34,6 @@ public class LoadingWindow extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance("https://goal-tracking-ccad5-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference usersRef = database.getReference("Users");
 
-    private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
     private User currentUser;

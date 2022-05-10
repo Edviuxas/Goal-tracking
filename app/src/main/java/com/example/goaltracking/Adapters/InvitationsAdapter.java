@@ -22,7 +22,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvitationsAdapter extends ArrayAdapter<User> {
+public class InvitationsAdapter extends ArrayAdapter<User> implements Filterable {
 
     private List<User> usersList;
     private List<User> filteredUsersList;
@@ -32,6 +32,21 @@ public class InvitationsAdapter extends ArrayAdapter<User> {
         super(context, resource, textViewResourceId, objects);
         this.context = context;
         usersList = objects;
+    }
+
+    @Override
+    public int getCount() {
+        return filteredUsersList.size();
+    }
+
+    @Override
+    public User getItem(int position) {
+        return filteredUsersList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -46,11 +61,6 @@ public class InvitationsAdapter extends ArrayAdapter<User> {
             if (user != null) {
                 textEmailAddress.setText(usersList.get(i).getEmailAddress());
             }
-
-//            if (!usersList.isEmpty()) {
-//                TextView textEmailAddress = (TextView) v.findViewById(R.id.textViewEmailAddress);
-//                textEmailAddress.setText(usersList.get(i).toString());
-//            }
         }
 
         return v;
@@ -65,13 +75,11 @@ public class InvitationsAdapter extends ArrayAdapter<User> {
 
             if (constraint == null || constraint.length() == 0) {
                 filteredUsersList.addAll(usersList);
-//                Log.i("adapter", "Added empty list");
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (User user: usersList) {
-                    if (user.getEmailAddress().toLowerCase().contains(filterPattern)) {
+                    if (user.getEmailAddress().toLowerCase().contains(filterPattern))
                         filteredUsersList.add(user);
-                    }
                 }
             }
 
@@ -83,9 +91,7 @@ public class InvitationsAdapter extends ArrayAdapter<User> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            clear();
-            addAll((List) results.values);
-            Log.i("results", results.values.toString());
+            filteredUsersList = (List<User>) results.values;
             notifyDataSetChanged();
         }
 

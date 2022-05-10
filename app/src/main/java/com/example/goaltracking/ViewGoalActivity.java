@@ -45,7 +45,6 @@ public class ViewGoalActivity extends AppCompatActivity {
     User currentUser;
     TableLayout table;
     float scale;
-    List<User> allUsers = new ArrayList<>();
     ITransaction transaction;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -60,37 +59,6 @@ public class ViewGoalActivity extends AppCompatActivity {
         currentUser = (User) getIntent().getSerializableExtra("currentUser");
         table = findViewById(R.id.tableViewOKR);
 
-//        ValueEventListener usersListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-//                        User user = singleSnapshot.getValue(User.class);
-//                        user.setId(singleSnapshot.getKey());
-//
-//                        List<Goal> userGoals = new ArrayList<>();
-//                        DataSnapshot goalsSnapshot = singleSnapshot.child("Goals");
-//                        for (DataSnapshot ds : goalsSnapshot.getChildren()) {
-//                            Goal g = ds.getValue(Goal.class);
-//                            g.setGoalId(ds.getKey());
-//                            userGoals.add(g);
-//                        }
-//                        user.setGoalsList(userGoals);
-////                        user.calculateLeaderboardPoints();
-//
-//                        allUsers.add(user);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Getting Post failed, log a message
-////                Toast.makeText(AllGoalsActivity.this, databaseError.toException().toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        };
-//
-//        usersRef.addValueEventListener(usersListener);
         populateTableWithOkrGoals(clickedGoal);
     }
 

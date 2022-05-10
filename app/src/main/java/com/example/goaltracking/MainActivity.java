@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN); // TODO: reiktų pakeisti kažkuo, kad nebūtų deprecated (registerForActivityResult)
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
@@ -123,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
                                         usersRef.child(uid).child("fcmToken").setValue(fcmToken);
 
                                         addFcmTokenToDB(uid);
-                                    } else {
-                                        //TODO: padaryti, kad pasiimtu is db jau esanti user, nes dabar jei jau yra user su tokiu emailu, niekas nevyksta
                                     }
                                 }
 

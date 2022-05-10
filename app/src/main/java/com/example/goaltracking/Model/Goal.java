@@ -261,7 +261,7 @@ public class Goal implements Serializable {
             }
         }
         /*
-        TODO: taškų skaičiavimas:
+        taškų skaičiavimas:
         Jei užduotis atliekama anksčiau laiko, taškai = sudėtingumas * dienos iki due date
         Jei užduotis atliekama tą pačią dieną, kaip deadline - taškai = sudėtingumas / 2
         Jei vėluojama atlikti, minusas turėtų augti vis labiau, kuo labiau vėluojama

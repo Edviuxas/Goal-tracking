@@ -291,7 +291,6 @@ public class AddNewGoalActivity extends AppCompatActivity implements TokenComple
         tableRow.addView(goalText);
         tableRow.addView(valueText);
         tableRow.addView(dueDateText);
-//        tableRow.addView(addBtn);
         tableRow.addView(difficultyText);
 
         tableRow.setId(okrTable.getChildCount());
