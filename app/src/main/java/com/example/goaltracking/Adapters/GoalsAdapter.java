@@ -128,6 +128,15 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
                                             }
                                         }
                                     }
+                                    if (allUsersFinishedOkrGoals && checkedGoal.isOkrGoalsDone()) {
+                                        for (int i = 0; i < sharedWith.stream().count(); i++) {
+                                            usersRef.child(sharedWith.get(i)).child("Goals").child(checkedGoal.getGoalId()).child("done").setValue(true);
+                                        }
+                                        usersRef.child(currentUser.getId()).child("Goals").child(checkedGoal.getGoalId()).child("done").setValue(true);
+                                        goalsList.remove(checkedGoal);
+                                    } else {
+                                        Toast.makeText(context, "Not all users have finished this goal", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
 
                                 @Override
@@ -136,15 +145,6 @@ public class GoalsAdapter extends BaseAdapter implements ListAdapter {
                                 }
                             });
                         }
-                    }
-                    if (allUsersFinishedOkrGoals) {
-                        for (int i = 0; i < sharedWith.stream().count(); i++) {
-                            usersRef.child(sharedWith.get(i)).child("Goals").child(checkedGoal.getGoalId()).child("done").setValue(true);
-                        }
-                        usersRef.child(currentUser.getId()).child("Goals").child(checkedGoal.getGoalId()).child("done").setValue(true);
-                        goalsList.remove(checkedGoal);
-                    } else {
-                        Toast.makeText(context, "Not all users have finished this goal", Toast.LENGTH_SHORT).show();
                     }
                 }
                 notifyDataSetChanged();

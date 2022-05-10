@@ -1,6 +1,7 @@
 package com.example.goaltracking;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -263,12 +265,14 @@ public class TeamsWithTeamFragment extends Fragment {
             public void onClick(View view) {
                 AutoCompleteTextView textEmailAddress = getView().findViewById(R.id.autoComplete);
                 String toEmailAddress = String.valueOf(textEmailAddress.getText());
-                TeamInvitation teamInvitation = new TeamInvitation(currentUser.getEmailAddress(), toEmailAddress, currentUser.getBelongsToTeam(), "Random team name");
+                TeamInvitation teamInvitation = new TeamInvitation(currentUser.getEmailAddress(), toEmailAddress, currentUser.getBelongsToTeam(), "Best team ever");
 
                 String key = pendingTeamRequestsRef.push().getKey();
                 pendingTeamRequestsRef.child(key).setValue(teamInvitation);
 
                 textEmailAddress.setText("");
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 Toast.makeText(getContext(), "Invitation successful", Toast.LENGTH_SHORT).show();
             }
         });
